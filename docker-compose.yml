@@ -1,7 +1,7 @@
 version: "3.1"
 services:
-  blynk-bridge:
-    image: gamariverib/tasmota-ota-server
+  tasmota-ota:
+    image: gamariverib/tasmota-ota
     container_name: tasmota-ota
     volumes:
       - ./content:/usr/src/app/content

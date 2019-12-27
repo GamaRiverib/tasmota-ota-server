@@ -37,8 +37,10 @@ app.get("/source/download", async (req: Request, res: Response, next: NextFuncti
   try {
     const result: string = await run_command(command);
     res.status(200).send(result || "Done!");
+    logger.info("Download completed");
   } catch (reason) {
     res.status(400).send(reason);
+    logger.error("Download fails");
   }
 });
 
@@ -48,15 +50,17 @@ app.get("/source/update", async (req: Request, res: Response, next: NextFunction
   try {
     const result: string = await run_command(command);
     res.status(200).send(result || "Done!");
+    logger.info("Update completed");
   } catch (reason) {
     res.status(400).send(reason);
+    logger.error("Update fails");
   }
 });
 
 app.get("/source/build/:env", async (req: Request, res: Response, next: NextFunction) => {
-  logger.info("Compile Tasmota source code");
   const env: string = req.params.env;
-  const command: string = `cd ${directory} && pio run --environment ${env}`;
+  logger.info(`Compile Tasmota source code with environment ${env}`);
+  const command: string = `pio run -d ${directory} --environment ${env} -v`;
   try {
     let result: string = await run_command(command);
     logger.info("Moving binary file");
@@ -64,8 +68,10 @@ app.get("/source/build/:env", async (req: Request, res: Response, next: NextFunc
     const mv_cmnd: string = `cp ${join(directory, ".pioenvs", env, "firmware.bin")} ${join(content, env + ".bin")}`;
     result += await run_command(mv_cmnd);
     res.status(200).send(result);
+    logger.info("Build completed");
   } catch (reason) {
     res.status(400).send(reason);
+    logger.error("Build fails");
   }
 });
 

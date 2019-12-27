@@ -1,9 +1,10 @@
-FROM node:10.17.0-alpine
+FROM node:10.17.0-jessie
 WORKDIR /usr/src/app
-RUN apk --update add git curl openssh python && \
-    python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)" && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm /var/cache/apk/*
+RUN apt-get update && \
+    apt-get install python python-pip git openssl -y
+RUN pip install setuptools
+RUN pip install -U platformio && \
+    pio platform update
 COPY package*.json ./
 RUN npm i
 RUN npm i typescript -g
