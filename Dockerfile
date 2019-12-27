@@ -20,4 +20,5 @@ RUN rm package.json
 RUN rm package-lock.json
 RUN mkdir content
 VOLUME [ "/usr/src/app/content" ]
+EXPOSE 8266
 CMD ["node", "build/index.js"]
