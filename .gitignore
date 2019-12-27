@@ -1,0 +1,10 @@
+build
+node_modules
+test/**/*.js
+content
+test/**/*.js.map
+*.key
+.nyc_output
+example/*.key
+logs
+data
