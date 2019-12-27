@@ -1,8 +1,7 @@
 FROM node:10.17.0-alpine
 WORKDIR /usr/src/app
-RUN apk --update add git less openssh \
-        python python-dev py-pip build-base && \
-    pip install -U platformio && \
+RUN apk --update add git curl openssh python && \
+    python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get-platformio.py)" && \
     rm -rf /var/lib/apt/lists/* && \
     rm /var/cache/apk/*
 COPY package*.json ./
