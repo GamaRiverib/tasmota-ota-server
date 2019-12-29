@@ -75,6 +75,20 @@ app.get("/source/build/:env", async (req: Request, res: Response, next: NextFunc
   }
 });
 
+app.get("/source/build/:env/clear", async (req: Request, res: Response, next: NextFunction) => {
+  const env: string = req.params.env;
+  logger.info(`Clear build environment ${env}`);
+  const command: string = `rm -rf ${join(directory, ".pioenvs", env)}`;
+  try {
+    let result: string = await run_command(command);
+    res.status(200).send(result || "Done!");
+    logger.info("Clear completed");
+  } catch (reason) {
+    res.status(400).send(reason);
+    logger.error("Clear fails");
+  }
+});
+
 async function terminate(): Promise<void> {
 try {
   logger.info("Turn off...");
